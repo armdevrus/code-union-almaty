@@ -1,23 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import Registration from "./components/Registration/Registration";
+import Main from "./pages/Main";
+import "./App.css";
+import Authorization from "./components/Authorization/Authorization";
 
 function App() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [visibleReg, setVisibleReg] = useState("flex");
+  const [visibleAuth, setVisibleAuth] = useState("flex");
+  const user = useSelector((state) => state.user);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Main
+        email={email}
+        password={password}
+        visibleAuth={visibleAuth}
+        setVisibleAuth={setVisibleAuth}
+        setVisibleReg={setVisibleReg}
+      />
+      {user.length ? (
+        <Authorization
+          email={email}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+          visible={visibleAuth}
+          setVisible={setVisibleAuth}
+        />
+      ) : (
+        <Registration visible={visibleReg} setVisible={setVisibleReg} />
+      )}
     </div>
   );
 }
